@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,10 +10,13 @@
             font-family: Arial, sans-serif;
             padding: 20px;
         }
-        label, input {
+
+        label,
+        input {
             display: block;
             margin: 10px 0;
         }
+
         button {
             padding: 10px 20px;
             background-color: #4CAF50;
@@ -20,63 +24,47 @@
             border: none;
             cursor: pointer;
         }
+
         button:hover {
             background-color: #45a049;
         }
     </style>
 </head>
+
 <body>
 
-    <h2>Submit Data to Google Sheet</h2>
-    
-    <form id="dataForm">
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required>
 
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
-
-        <button type="button" onclick="sendToWebhook()">Submit</button>
-    </form>
-
-    <div id="responseMessage"></div>
 
     <script>
+        // Example function to send data to the Google Apps Script endpoint
         function sendToWebhook() {
-            const webhookUrl = "https://script.google.com/macros/s/AKfycbytHY-Pc4xvT9TlK128RZOp2FfB9WgKYAKhtsxzFdF29-lkH5fa7NmxRHi-2yv3fAjB/exec";  // Replace with your actual webhook URL
-
-            // Get form data
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-
-            // Prepare data to send
             const data = {
-                name: name,
-                email: email
+                email: 'test@example.com',
+                title: 'Test Title',
+                message: 'This is a test message'
             };
 
-            // Send POST request
-            fetch(webhookUrl, {
-                method: "POST",          // HTTP method
+            fetch('https://script.google.com/macros/s/AKfycbwmnteyHfuvHJ4UsYgnus4urc92ab_NzqzeSm5OpXRXD_xETbLYOrtxr3gWADUTbL0q/exec', {
+                method: 'POST',
                 headers: {
-                    "Content-Type": "application/json"   // Send JSON data
+                    'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(data)  // Convert data object to JSON string
+                body: JSON.stringify(data)
             })
-            .then(response => response.json())  // Parse the JSON response
-            .then(data => {
-                console.log("Success:", data);  // Handle the response
-                document.getElementById('responseMessage').innerHTML = "Data submitted successfully!";
-            })
-            .catch((error) => {
-                console.error("Error:", error);  // Handle any errors
-                document.getElementById('responseMessage').innerHTML = "Error submitting data.";
-            });
-
-            // Optionally reset the form
-            document.getElementById('dataForm').reset();
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                    alert('Data sent successfully!');
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    alert('Error sending data.');
+                });
         }
+        sendToWebhook()
+
     </script>
 
 </body>
+
 </html>
